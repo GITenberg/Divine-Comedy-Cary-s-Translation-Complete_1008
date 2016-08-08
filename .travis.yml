@@ -1,0 +1,61 @@
+sudo: required
+dist: trusty
+language: ruby
+
+before_install:
+before_install:
+- gem install asciidoctor -v 1.5.2
+- gem install tilt
+- sudo pip install git+https://github.com/gitenberg-dev/gitberg
+- sudo pip install pillow
+- sudo pip install cssutils
+- sudo pip install docutils
+- sudo pip install roman
+- sudo pip install git+https://github.com/gitenberg-dev/pg-epubmaker
+script:
+- VERSION=`ruby -e "require 'yaml'; meta = YAML.load_file('metadata.yaml'); puts meta['_version'];"`
+- git clone https://github.com/gitenberg-dev/asciidoctor-htmlbook.git
+- sudo pip install -r asciidoctor-htmlbook/gitberg-machine/requirements.txt
+
+- /usr/bin/python -c "from gitenberg import travis; travis.build_epub()"
+- ebook-convert book.epub book.mobi
+- xvfb-run ebook-convert book.epub book.pdf
+branches:
+  only:
+  - master
+notifications:
+  webhooks:
+    urls:
+      - https://unglue.it/api/travisci/webhook
+    on_success: always
+    on_failure: never
+    on_start: never
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: vrHFfqEY1s/dNtwQSAuUnNQwWcU4r7GxJrlDocd59BtjMTZy3zwVOHz/N0GyizTi2KUfTdEQogU2gLkKirDkSm/IY4Q26yia80R2Xapk8J6EbAGMhptbRF5nbNhqbzbyGr+531soyq4ESVghmmAHriP2PpyzOSfxaz6qP3oaMCTxo9gHOMZwE8Q+9qYxPhwsVH5+Nkgxb67enR3A/8iydAlGq6fwgIIoHJAGsec7rtP7cZNNzENkjiOS/6I5ccqokyewRHgnUOA89I1R4Q0mUYP1K3OxkzJmzhbOgHlzZOgGOyOWcEhExbo3/BwoI9jvbeKPKw9tV43tCRYyfVF7N4FuRkYGN0QRjxElYilyAooxk0YOaXcTpL7bp84ztf0kxpFJxJhRI7gzfubNReRmddm/8k1iWYtg26HIZ4uOthKXp7rr4+cj9fOVN+N41ulKfTD1mPj8yhkJTWXKR9+RKxKPfqXqnBsk5supKb8ZVRpsdsINugnkznR5dI7aPEJfoBE4jjSien4iZ/boRaNaBXzArA4HG6uyraq9WWUPcC7DRU5pU1nfqCZ9JkpLAs7+XTap4QI3qVhI2l9CDZmbFRqD9D+bPcbJzcMTGqffD+sGqK7YAK1sfbkoCTG0pMHk9n64gxYmO4fzMRjhbJHnSSmXucArOoJs4cTc4VJvJzQ=
+  file:
+    - book.epub
+    - book.mobi
+    - book.pdf
+  "on":
+    repo: GITenberg/Divine-Comedy-Cary-s-Translation-Complete_1008
+addons:
+  apt:
+    packages:
+    - xsltproc
+    - xvfb
+    - calibre
+    - python-pip
+    - git
+    - python-dev
+    - libjpeg-dev
+    - libpng-dev
+    - libfreetype6
+    - libfreetype6-dev
+    - zlib1g-dev
+    - python-lxml
+    - libxml2-dev
+    - libxslt1-dev
+    - tidy

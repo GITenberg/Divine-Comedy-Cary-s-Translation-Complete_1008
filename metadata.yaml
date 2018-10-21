@@ -1,5 +1,5 @@
 _repo: Divine-Comedy-Cary-s-Translation-Complete_1008
-_version: 0.2.0
+_version: 0.2.1
 contributor:
   translator:
     agent_name: Cary, Henry Francis
@@ -39,5 +39,6 @@ subjects:
 - !lcsh 'Epic poetry, Italian -- Translations into English'
 - !lcsh 'Italian poetry -- To 1400 -- Translations into English'
 - !lcc 'PQ'
+- GITenberg
 title: Divine Comedy, Cary's Translation, Complete
 url: http://www.gutenberg.org/ebooks/1008
